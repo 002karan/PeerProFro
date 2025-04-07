@@ -17,17 +17,25 @@ import chatGpt from "./chatGpt"
 import ChatGptBox from './chatGpt';
 import code from "../assets/codeSender.svg"
 import CodeSender from './codeSender';
-
+import Loader from './notificationCircle';
+// import { useDispatch, useSelector } from 'react-redux';
+import { toggleState, setTrue, setFalse } from "../Features/counter/toggleConnectUsers";
 
 const LeftBar = () => {
   const dispatch = useDispatch();
 
-  const [isChatBoxVisible, setIsChatBoxVisible] = useState(true);
+  const [isChatBoxVisible, setIsChatBoxVisible] = useState(false);
   const [isVSCodeIconClicked, setIsVSCodeIconClicked] = useState(false);
   const [isDrawIconClicked, setIsDrawIconClicked] = useState(false);
   const [isToolsIconClicked, setIsToolsIconClicked] = useState(false);
   const [isCodeSenderClick, setCodeSenderClicked] = useState(false);
   const [isGptClicked, setGptClicked] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const unreadMessage = useSelector((state) => state.connectedUsers.unreadMessage);
+  const isCodeSharingOpen = useSelector((state) => state.connectedUsers.isCodeSharingOpen);
+
+  console.log("unreadMessage", unreadMessage)
+  console.log("isChatBoxVisible", isChatBoxVisible)
 
 
   useEffect(() => {
@@ -35,7 +43,16 @@ const LeftBar = () => {
   }, [dispatch]);
 
   const handleChatIconClick = () => {
-    setIsChatBoxVisible(!isChatBoxVisible);
+    setIsChatBoxVisible((prev) => {
+      const newValue = !prev;
+      console.log("Chatbox toggled. New isChatBoxVisible:", newValue);
+      if (newValue) {
+        // If chatbox is being opened, set unreadMessage to false
+        dispatch(setFalse("unreadMessage"));
+        console.log("Chatbox opened, unreadMessage set to false");
+      }
+      return newValue;
+    });
   };
 
   const handleVSCodeIconClick = () => {
@@ -49,7 +66,16 @@ const LeftBar = () => {
     setGptClicked(!isGptClicked);
   };
   const handleCodeSender = () => {
-    setCodeSenderClicked(!isCodeSenderClick);
+    setCodeSenderClicked((prev) => {
+      const newValue = !prev;
+      if (newValue && isCodeSharingOpen) {
+        dispatch(setFalse("isCodeSharingOpen"));
+        console.log("CodeSender opened, isCodeSharingOpen reset to false");
+      }
+      console.log("CodeSender toggled:", newValue);
+      return newValue;
+    });
+
   };
 
 
@@ -62,13 +88,13 @@ const LeftBar = () => {
       <StyledSidebar>
         <div className="sidebar-header">
           <div
-            className={`icon-container ${isChatBoxVisible ? 'clicked' : ''}`}
+            className={` message-icon ${isChatBoxVisible ? 'clicked' : ''}`}
             onClick={handleChatIconClick}
             data-tooltip-id="Chat"
             data-tooltip-content="Chat Box"
           >
             <svg
-              className={`icon ${isChatBoxVisible ? 'white-icon' : ''}`}
+              className={`icon ${isChatBoxVisible ? '' : 'white-icon'}`}
               width="40px"
               height="40px"
               viewBox="0 0 24 24"
@@ -77,12 +103,13 @@ const LeftBar = () => {
             >
               <path
                 d="M7 9H17M7 13H12M21 20L17.6757 18.3378C17.4237 18.2118 17.2977 18.1488 17.1656 18.1044C17.0484 18.065 16.9277 18.0365 16.8052 18.0193C16.6672 18 16.5263 18 16.2446 18H6.2C5.07989 18 4.51984 18 4.09202 17.782C3.71569 17.5903 3.40973 17.2843 3.21799 16.908C3 16.4802 3 15.9201 3 14.8V7.2C3 6.07989 3 5.51984 3.21799 5.09202C3.40973 4.71569 3.71569 4.40973 4.09202 4.21799C4.51984 4 5.0799 4 6.2 4H17.8C18.9201 4 19.4802 4 19.908 4.21799C20.2843 4.40973 20.5903 4.71569 20.782 5.09202C21 5.51984 21 6.0799 21 7.2V20Z"
-                stroke={isChatBoxVisible ? "white" : "#00BFFF"}
+                stroke={isChatBoxVisible ? "#00BFFF" : "white"}
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
             </svg>
+            {unreadMessage && !isChatBoxVisible && <Loader />}
             <Tooltip id="Chat" place="left" />
           </div>
 
@@ -127,8 +154,9 @@ const LeftBar = () => {
             data-tooltip-content="Code Sender"
           >
             <img src={code} alt="Draw" className={`icon ${isCodeSenderClick ? 'white-icon' : ''} chatGpt`} />
+            {isCodeSharingOpen && !isCodeSenderClick && <Loader />}
+            <Tooltip id="CodeSender" place="left" />
           </div>
-          <Tooltip id="CodeSender" place="left" />
 
           <div
             className={`icon-container ${isToolsIconClicked ? 'tools-clicked' : ''}`}
@@ -139,15 +167,12 @@ const LeftBar = () => {
             <img src={toolsIcon} alt="Tools" className={`icon ${isToolsIconClicked ? 'white-icon' : ''}`} />
           </div>
           <Tooltip id="Tools" place="left" />
-
         </div>
-
-
 
       </StyledSidebar>
       {/* Conditionally render the ChatBox, CodeEditor, and Drawing */}
-      {isChatBoxVisible && <ChatBox isVisible={isChatBoxVisible} toggleChatBox={handleChatIconClick} />}
-      {isVSCodeIconClicked && <EditorContainer><CodeEditor /></EditorContainer>}
+      <ChatBox isVisible={isChatBoxVisible} toggleChatBox={handleChatIconClick} />
+    {isVSCodeIconClicked && (  <EditorContainer><CodeEditor isEditorVisible={isVSCodeIconClicked} toggleEditor={handleVSCodeIconClick} /></EditorContainer> )}
       {isDrawIconClicked && (
         <DrawingContainer>
           <Drawing />
@@ -155,12 +180,10 @@ const LeftBar = () => {
       )}
 
       {isGptClicked && (
-       <ChatGptBox/>
+        <ChatGptBox />
       )}
+        <CodeSender isCodeSenderClick={isCodeSenderClick} handleCodeSender={handleCodeSender}/>
 
-      {isCodeSenderClick && (
-       <CodeSender/>
-      )}
 
     </>
   );
@@ -181,8 +204,9 @@ const StyledSidebar = styled.div`
   top: 0;
   z-index: 1000;
 
-  .icon-container {
+  .icon-container,.message-icon {
     display: flex;
+    position: relative;
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -211,6 +235,20 @@ const StyledSidebar = styled.div`
      height: 60px;
     width: 60px;
 }
+
+.message-icon
+{
+    background-color: #00BFFF;
+    border-radius: 8px;
+    width: 60px;
+    height: 60px;
+}
+    .message-icon.clicked {
+    background-color: transparent; /* Remove background when clicked */
+  }
+
+
+
   .icon-container.clicked,
   .icon-container.vscode-clicked,
   .icon-container.draw-clicked,

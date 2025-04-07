@@ -5,7 +5,7 @@ import styled from "styled-components";
 import ScrollToBottom, { useScrollToBottom } from "react-scroll-to-bottom";
 import { io } from "socket.io-client";
 import sendIcon from "../assets/sendicon.png";
-
+import { toggleState, setTrue, setFalse } from "../Features/counter/toggleConnectUsers";
 const socket = io(import.meta.env.VITE_SERVER_BASE_URL);
 
 const ChatBox = ({ isVisible, toggleChatBox }) => {
@@ -18,11 +18,12 @@ const ChatBox = ({ isVisible, toggleChatBox }) => {
   const dispatch = useDispatch();
   const { profile } = useSelector((state) => state.user);
   const groupId = useSelector((state) => state.passingGroupId.groupId);
-  // console.log("idofGroup")
-  // const groupId = profile?.user?.groupId;
+  const unreadMessage = useSelector((state) => state.connectedUsers.unreadMessage);
+
+  console.log("unreadMessage", unreadMessage)
   const senderName = profile?.user?.name;
   const user_id = profile?.user?._id;
-
+  console.log("user_id",user_id)
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,6 +33,8 @@ const ChatBox = ({ isVisible, toggleChatBox }) => {
   }, [dispatch]);
 
   useEffect(() => {
+
+
     if (!socket.connected) {
       socket.connect();
     }
@@ -43,7 +46,14 @@ const ChatBox = ({ isVisible, toggleChatBox }) => {
       // Listen for messages broadcasted by the server
       socket.on("receiveGroupMessage", (message) => {
         console.log("📩 Received message:", message);
+
         setMessages((prev) => [...prev, message]);
+        if (message.user_id !== user_id && !isVisible) {
+          dispatch(setTrue('unreadMessage'));
+          console.log("Message from another user, chatbox closed, unreadMessage set to true");
+        } else {
+          console.log("Message from self or chatbox open, unreadMessage unchanged");
+        }
       });
 
       return () => {
@@ -231,7 +241,11 @@ const StyledChatBox = styled.div`
     align-self: flex-end;
     margin-left: auto;
   }
+.sender-name
+{
+color : #00bfff;
 
+}
   .other {
     background-color: #333;
     color: white;

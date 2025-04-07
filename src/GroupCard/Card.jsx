@@ -18,7 +18,7 @@ const getColor = (index) => {
 };
 
 const Card = ({ uniqueId, name, language, topic, members = [], NumberOfMembers }) => {
-  console.log("members", members);
+
   const dispatch = useDispatch();
   const [isLocked, setIsLocked] = useState(false);
   const { profile } = useSelector((state) => state.user);

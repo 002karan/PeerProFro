@@ -13,13 +13,15 @@ const GroupFeatures = () => {
   const micToggleBtn = useSelector((state) => state.connectedUsers.isMicoff);
   const VideoToggleBtn = useSelector((state) => state.connectedUsers.isVideooff);
   const isscreen = useSelector((state) => state.connectedUsers.isScreenOff);
-  console.log("screen", isscreen);
+  const isCallEnd = useSelector((state) => state.connectedUsers.isCallEnd);
+  console.log("isCallEnd", isCallEnd);
 
   const [clickedIcons, setClickedIcons] = useState({
     mic: true,
     polygon: true,
     screen: false,
     participations: false,
+    callEnd: false,
   });
 
   const [isVisible, setIsVisible] = useState(true); // State to manage visibility
@@ -34,6 +36,9 @@ const GroupFeatures = () => {
     }
     else if (icon === "screen") {
       dispatch(isscreen ? setFalse("isScreenOff") : setTrue("isScreenOff"));
+    }
+    else if (icon === "callEnd") {
+      dispatch(isCallEnd ? setFalse("isCallEnd") : setTrue("isCallEnd"));
     }
     setClickedIcons((prevState) => ({
       ...prevState,
@@ -113,7 +118,7 @@ const GroupFeatures = () => {
           </div>
 
           {/* End Call Icon */}
-          <div className="icon-container endcall-icon">
+          <div className="icon-container endcall-icon" onClick={() => handleIconClick('callEnd')}>
             <img src={endcall} alt="End Call" className="icon" />
           </div>
         </StyledBar>

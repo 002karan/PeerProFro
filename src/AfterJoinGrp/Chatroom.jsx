@@ -5,6 +5,7 @@ import GroupFeatures from "./groupFeatures";
 import { useSelector } from "react-redux";
 import RoomJoin from "../VideoCallFeature.jsx/RoomJoin/RoomJoin";
 import ScreenShare from "./ScreenShare";
+import CallEnd from "./CallEnd";
 
 export default function Chatroom() {
   const isscreen = useSelector((state) => state.connectedUsers.isScreenOff);
@@ -23,7 +24,7 @@ export default function Chatroom() {
     <ChatroomContainer>
       {/* Left Sidebar */}
       <LeftBar />
-
+      <CallEnd/>
       {/* Center Content */}
       <CenterContent>
         {isParticipationsActive && <RoomJoin />}

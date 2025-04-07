@@ -5,9 +5,10 @@ import SearchBar from './Search.jsx';
 import LoginForm from './LoginForm';
 import RegisterForm from './Register';
 import signIn from "../assets/SignIn.svg";
-import avatar from "../assets/avatarIcon.png";
+import avatar from "../assets/user-profile.svg";
 import cross from "../assets/cross.png";
 import { logoutUser } from '../Features/counter/authSlice';
+import PeerProLogo from './websiteLogo.jsx';
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -33,10 +34,15 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="p-4 flex items-center justify-between w-full">
+      <nav className="p-4 flex items-center justify-between w-full fixed top-0 z-30 ">
         <div className="flex items-center space-x-4">
           <SlideBar />
-          <h1 className="text-xl sm:text-2xl font-bold text-white">TechTalk</h1>
+          {/* <h1 className="text-xl sm:text-2xl font-bold text-white">PEERPRO</h1> */}
+          <div className='z-30'>
+
+          <PeerProLogo/>
+          </div>
+
         </div>
 
         <div className="flex-1 flex justify-center">
@@ -48,7 +54,7 @@ const Navbar = () => {
             src={isUserLoggedIn ? avatar : signIn}
             alt="User Icon"
             onClick={() => setIsPopupOpen(!isPopupOpen)}
-            className="cursor-pointer w-10 h-10 rounded-full object-cover"
+            className={`cursor-pointer ${isUserLoggedIn ? `w-10` : `w-[100px]` } w-10 h-10 rounded-full object-cover`}
           />
           {isUserLoggedIn && (
             <button onClick={handleLogout} className="text-white bg-red-500 px-4 py-2 rounded">

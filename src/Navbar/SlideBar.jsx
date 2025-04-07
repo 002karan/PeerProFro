@@ -1,11 +1,24 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 import signIn from "../assets/SignIn.svg";
 
 export default function SlideBar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState(null);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
+  };
+
+  const menuItems = [
+    { id: 'home', label: 'Home', path: '/' },
+    { id: 'profile', label: 'Profile', path: '/profile' }, // Example path, adjust as needed
+    { id: 'review', label: 'Review', path: '/ReviewPage' },
+    { id: 'about', label: 'About Us', path: '/AboutSection' }, // Example path
+  ];
+
+  const handleItemClick = (itemId) => {
+    setActiveItem(itemId);
   };
 
   return (
@@ -23,7 +36,7 @@ export default function SlideBar() {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full bg-[#131212] text-white z-50 transition-all duration-300 ease-in-out overflow-hidden`}
+        className={`fixed top-0 left-0 h-full bg-[#131212] text-white transition-all duration-300 ease-in-out overflow-hidden z-50`}
         style={{
           width: isOpen ? '280px' : '0px',
         }}
@@ -39,33 +52,29 @@ export default function SlideBar() {
             </button>
           </div>
 
-          <ul className="space-y-4 flex-grow">
-            <li>
-              <a href="#" className="text-lg hover:text-gray-300 transition-colors block">
-                Home
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-lg hover:text-gray-300 transition-colors block">
-                Profile
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-lg hover:text-gray-300 transition-colors block">
-                Settings
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-lg hover:text-gray-300 transition-colors block">
-                Logout
-              </a>
-            </li>
-            <li className="flex items-center">
-              <img src={signIn} alt="Sign In" className="h-6 w-6 mr-3" />
-              <a href="#" className="text-lg hover:text-gray-300 transition-colors">
-                Sign In
-              </a>
-            </li>
+          <ul className="space-y-2 flex-grow">
+            {menuItems.map((item) => (
+              <li key={item.id}>
+                <Link
+                  to={item.path} // Use Link with the path
+                  className={`flex items-center text-lg p-2 rounded-md transition-all duration-200 ease-in-out
+                    ${activeItem === item.id
+                      ? 'bg-gray-700 text-white transform scale-105'
+                      : 'text-gray-300 hover:bg-gray-800 hover:text-white hover:transform hover:scale-102'
+                    }`}
+                  onClick={() => handleItemClick(item.id)}
+                >
+                  {item.icon && (
+                    <img
+                      src={item.icon}
+                      alt={item.label}
+                      className="h-6 w-6 mr-3"
+                    />
+                  )}
+                  <span>{item.label}</span>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

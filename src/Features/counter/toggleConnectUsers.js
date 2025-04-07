@@ -8,6 +8,9 @@ const initialState = {
   isVideooff:true,
   isScreenOff:false,
   isSharingScreen :false,
+  unreadMessage : false,
+  isCodeSharingOpen : false,
+  isCallEnd : false
 };
 
 const toggleConnectUsers = createSlice({

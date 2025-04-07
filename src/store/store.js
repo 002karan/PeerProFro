@@ -9,6 +9,10 @@ import GroupIdUserName from '../Features/counter/passingGroupId'
 import toggleConnectUsers from '../Features/counter/toggleConnectUsers'
 import videocontroller from '../Features/counter/videoSlice'
 import chatGptReducer from "../Features/counter/chatGpt"
+import searchReducer  from "../Features/counter/SearchFeature"
+import ReviewReducer from "../Features/counter/reviewSlice"
+import callEndSlice from "../Features/counter/callEndSlice"
+
 
 
 export const store = configureStore({
@@ -21,7 +25,11 @@ export const store = configureStore({
     passingGroupId:GroupIdUserName,
     connectedUsers:toggleConnectUsers,
     videocontroller:videocontroller,
-    chatGpt:chatGptReducer
+    chatGpt:chatGptReducer,
+    searchbar:searchReducer,
+    ReviewReducer : ReviewReducer,
+    callEndSlice : callEndSlice
+
 
   },
 })

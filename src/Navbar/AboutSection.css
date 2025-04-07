@@ -1,0 +1,88 @@
+.about-section {
+    padding: 2rem;
+    text-align: center;
+    background-color: black;
+    color: white;
+    font-weight: 400;
+
+  }
+
+  .team-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    justify-content: center;
+    color: rgb(228, 236, 237);
+  }
+
+  .team-logo {
+    width: 90px; /* Adjust as needed */
+    height: 90px;
+    object-fit: contain;
+    border-radius: 50%;
+  }
+
+
+
+  /* Responsive adjustment */
+@media (max-width: 600px) {
+  .team-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .team-logo {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+  .about-section h1{
+    font-size: 40px;
+  }
+
+
+.team-summary ul {
+  list-style-type: none;
+  }
+
+
+  .team-members {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .member-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #373636;
+    border-radius: 8px;
+    padding: 1.5rem;
+    width: 250px;
+    box-shadow: 0 4px 10px rgba(223, 183, 183, 0.1);
+  }
+
+  .member-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+  }
+
+  .role {
+    color: #fbfbfb;
+    font-style: italic;
+  }
+
+  .bio {
+    margin-top: 0.5rem;
+    color: #f1eaea;
+  }

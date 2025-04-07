@@ -1,24 +1,44 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserProfile } from "../Features/counter/getProfile";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import io from "socket.io-client";
 
-// Initialize socket connection
+import Loader from "./notificationCircle";
+import { toggleState, setTrue, setFalse } from "../Features/counter/toggleConnectUsers";
+
 const socket = io(import.meta.env.VITE_SERVER_BASE_URL, {
   transports: ["websocket"],
 });
 
-const CodeSender = () => {
+const CodeSender = ({isCodeSenderClick}) => {
+  const dispatch = useDispatch();
   const groupId = useSelector((state) => state.passingGroupId.groupId);
   const [activeTab, setActiveTab] = useState("sending");
   const [codeInput, setCodeInput] = useState("");
   const [receivedCode, setReceivedCode] = useState("");
   const [copyButtonText, setCopyButtonText] = useState("Copy"); // Track button text
+  const isCodeSharingOpen = useSelector((state) => state.connectedUsers.isCodeSharingOpen);
+  const { profile } = useSelector((state) => state.user);
+  const user_id = profile?.user?._id;
+
+
+
+
 
   // Socket.io setup
+
+
+    useEffect(() => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        dispatch(fetchUserProfile());
+      }
+    }, [dispatch]);
+
   useEffect(() => {
     if (groupId) {
       socket.emit("joinGroup", { groupId });
@@ -28,6 +48,12 @@ const CodeSender = () => {
     socket.on("codeReceived", (data) => {
       console.log("Code received from server:", data.code);
       setReceivedCode(data.code);
+      if (!isCodeSenderClick) {
+        dispatch(setTrue("isCodeSharingOpen")); // Use isCodeSharingOpen instead of unreadMessage
+        console.log("Code received, CodeSender not visible, isCodeSharingOpen set to true");
+      } else {
+        console.log("Code received, CodeSender visible, isCodeSharingOpen unchanged");
+      }
     });
 
     return () => {
@@ -68,40 +94,45 @@ const CodeSender = () => {
     }
   };
 
+  console.log("CodeSender isCodeSenderClick:", isCodeSenderClick);
+
   return (
+   <>
+   {isCodeSenderClick && (
     <Wrapper>
       {/* Blurred Background Workaround */}
       <BlurredBackground
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.8 }}
         transition={{ duration: 0.5 }}
-      />
+        />
 
       {/* Overlay */}
       <Overlay
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.3 }}
         transition={{ duration: 0.5 }}
-      />
+        />
 
       {/* Popup Container */}
       <PopupContainer
         initial={{ y: "-100%", opacity: 0 }}
         animate={{ y: "10%", opacity: 0.9 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-      >
+        >
         <TabContainer>
           <Tab
             active={activeTab === "sending"}
             onClick={() => setActiveTab("sending")}
-          >
+            >
             Sending
           </Tab>
           <Tab
             active={activeTab === "receiving"}
             onClick={() => setActiveTab("receiving")}
-          >
+            >
             Receiving
+      
           </Tab>
         </TabContainer>
 
@@ -112,7 +143,7 @@ const CodeSender = () => {
                 value={codeInput}
                 onChange={(e) => setCodeInput(e.target.value)}
                 placeholder="Type your code here..."
-              />
+                />
               <SyntaxHighlighter
                 language="javascript"
                 style={vscDarkPlus}
@@ -127,7 +158,7 @@ const CodeSender = () => {
                   fontSize: "14px", // Ensure readable size
                   lineHeight: "1.5", // Improve readability
                 }}
-              >
+                >
                 {codeInput || "// Start typing your code..."}
               </SyntaxHighlighter>
               <SendButton onClick={handleSend}>Send</SendButton>
@@ -151,7 +182,7 @@ const CodeSender = () => {
                   fontSize: "14px", // Ensure readable size
                   lineHeight: "1.5", // Improve readability
                 }}
-              >
+                >
                 {receivedCode || "// No code received yet..."}
               </SyntaxHighlighter>
               <CopyButton onClick={handleCopy} disabled={!receivedCode}>
@@ -161,7 +192,8 @@ const CodeSender = () => {
           )}
         </Content>
       </PopupContainer>
-    </Wrapper>
+    </Wrapper> )}
+  </>
   );
 };
 
