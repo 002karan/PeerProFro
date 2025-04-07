@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserProfile } from "../../Features/counter/getProfile";
 import ConnectedUsers from '../../AfterJoinGrp/connectedUsers'; // Adjust path as needed
 
-const socket = io("http://localhost:5000", { transports: ["websocket"] });
-
+const socket = io(import.meta.env.VITE_SERVER_BASE_URL, { transports: ["websocket"] });
 const RoomJoin = () => {
     const dispatch = useDispatch();
     const [joined, setJoined] = useState(false);

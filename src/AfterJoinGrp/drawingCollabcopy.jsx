@@ -19,7 +19,7 @@ const DrawingBoard = () => {
   const { profile } = useSelector((state) => state.user);
   const userName = profile?.user?.name || "Anonymous";
 
-  const socket = io(import.meta.env.VITE_SERVER_BASE_URL || "http://localhost:5000", {
+  const socket = io(import.meta.env.VITE_SERVER_BASE_URL, {
     reconnection: true,
     reconnectionAttempts: 5,
     reconnectionDelay: 1000,

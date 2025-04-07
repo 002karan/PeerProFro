@@ -30,7 +30,7 @@ const DrawingBoard = () => {
   console.log("profile",profile)
   console.log("groupId",groupId)
 
-  const socket = io(import.meta.env.VITE_SERVER_BASE_URL || "http://localhost:5000", {
+  const socket = io(import.meta.env.VITE_SERVER_BASE_URL, {
 
     reconnection: true,
     reconnectionAttempts: 5,
