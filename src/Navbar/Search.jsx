@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Search } from "lucide-react"; // Using Lucide-react for the search icon
-import { setSearchTerm } from '../features/counter/SearchFeature';
+import { setSearchTerm } from '../Features/counter/SearchFeature';
 import { useDispatch, useSelector } from 'react-redux';
 
 const SearchBar = () => {
