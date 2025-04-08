@@ -26,6 +26,7 @@ export const fetchReviews = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_BASE_URL}/user/v1/getReviews`);
+      console.log("response",response)
       return response.data.reviews; // Return the reviews array directly
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
