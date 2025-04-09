@@ -1,13 +1,15 @@
+// src/socketHandler/socketHandler.js
+
 import { io } from "socket.io-client";
 
-let socket;
 
-export const initSocket = () => {
-  socket = io(import.meta.env.VITE_SERVER_BASE_URL, {
-    transports: ['websocket', 'polling'],
-    withCredentials: true,
-  });
-  return socket;
-};
 
-export const getSocket = () => socket;
+// Create a single socket instance
+export const socket = io(`${import.meta.env.VITE_SERVER_BASE_URL}`, {
+  transports: ["websocket"],
+  withCredentials: true,
+});
+
+
+
+

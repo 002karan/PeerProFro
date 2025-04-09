@@ -5,15 +5,16 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import {socket} from '../socketHandler/socketHandler'
 import io from "socket.io-client";
 
 import Loader from "./notificationCircle";
 import { toggleState, setTrue, setFalse } from "../Features/counter/toggleConnectUsers";
 
-const socket = io(import.meta.env.VITE_SERVER_BASE_URL, {
-  transports: ['websocket', 'polling'],
-  withCredentials: true, // Ensure WebSocket is attempted first
-});
+// const socket = io(import.meta.env.VITE_SERVER_BASE_URL, {
+//   transports: ['websocket', 'polling'],
+//   withCredentials: true, // Ensure WebSocket is attempted first
+// });
 
 const CodeSender = ({isCodeSenderClick}) => {
   const dispatch = useDispatch();

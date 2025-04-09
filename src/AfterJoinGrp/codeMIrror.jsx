@@ -8,6 +8,7 @@ import { fetchUserProfile } from "../Features/counter/getProfile";
 import { runCode, stopCode } from "../Features/counter/coderunnerSlice";
 import styled from "styled-components";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import {socket} from '../socketHandler/socketHandler'
 import { io } from "socket.io-client";
 
 class CustomAwareness {

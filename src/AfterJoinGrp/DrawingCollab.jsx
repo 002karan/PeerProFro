@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as Y from "yjs";
+import {socket} from '../socketHandler/socketHandler'
 import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
 import undoSvg from "../assets/undo.svg";

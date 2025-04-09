@@ -5,12 +5,12 @@ import styled from "styled-components";
 import ScrollToBottom, { useScrollToBottom } from "react-scroll-to-bottom";
 import { io } from "socket.io-client";
 import sendIcon from "../assets/sendicon.png";
-import { initSocket, getSocket } from "../socketHandler/socketHandler";
+import {socket} from '../socketHandler/socketHandler'
 import { toggleState, setTrue, setFalse } from "../Features/counter/toggleConnectUsers";
-const socket = io(import.meta.env.VITE_SERVER_BASE_URL,{
-  transports: ['websocket', 'polling'],
-  withCredentials: true,
-});
+// const socket = io(import.meta.env.VITE_SERVER_BASE_URL,{
+//   transports: ['websocket', 'polling'],
+//   withCredentials: true,
+// });
 
 const ChatBox = ({ isVisible, toggleChatBox }) => {
   const dispatch = useDispatch();
