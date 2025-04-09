@@ -9,7 +9,8 @@ import SearchBar from '../Navbar/Search';
 
 
 const socket = io(import.meta.env.VITE_SERVER_BASE_URL,{
-    transports: ['websocket', 'polling'], // Ensure WebSocket is attempted first
+    transports: ['websocket', 'polling'],
+    withCredentials: true,// Ensure WebSocket is attempted first
   });
 
 export default function Home() {
@@ -17,7 +18,7 @@ export default function Home() {
     const groupsState = useSelector((state) => state.group);
     const searchTerm = useSelector((state) => state.searchbar.searchTerm)
     const [filteredGroups, setFilteredGroups] = useState([]);
- 
+
 
 
     // ✅ Fetch groups when component mounts

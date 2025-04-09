@@ -9,6 +9,7 @@ import { initSocket, getSocket } from "../socketHandler/socketHandler";
 import { toggleState, setTrue, setFalse } from "../Features/counter/toggleConnectUsers";
 const socket = io(import.meta.env.VITE_SERVER_BASE_URL,{
   transports: ['websocket', 'polling'],
+  withCredentials: true,
 });
 
 const ChatBox = ({ isVisible, toggleChatBox }) => {
@@ -36,7 +37,7 @@ const ChatBox = ({ isVisible, toggleChatBox }) => {
 
   useEffect(() => {
 
-    
+
     if (!socket.connected) {
       socket.connect();
     }

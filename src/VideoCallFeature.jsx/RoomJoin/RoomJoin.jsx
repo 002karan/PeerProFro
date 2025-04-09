@@ -5,7 +5,8 @@ import { fetchUserProfile } from "../../Features/counter/getProfile";
 import ConnectedUsers from '../../AfterJoinGrp/connectedUsers'; // Adjust path as needed
 
 const socket = io(import.meta.env.VITE_SERVER_BASE_URL, {
-    transports: ['websocket', 'polling'], // Ensure WebSocket is attempted first
+    transports: ['websocket', 'polling'],
+    withCredentials: true, // Ensure WebSocket is attempted first
   });
 const RoomJoin = () => {
     const dispatch = useDispatch();

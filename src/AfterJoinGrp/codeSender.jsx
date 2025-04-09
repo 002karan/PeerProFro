@@ -11,7 +11,8 @@ import Loader from "./notificationCircle";
 import { toggleState, setTrue, setFalse } from "../Features/counter/toggleConnectUsers";
 
 const socket = io(import.meta.env.VITE_SERVER_BASE_URL, {
-  transports: ['websocket', 'polling'], // Ensure WebSocket is attempted first
+  transports: ['websocket', 'polling'],
+  withCredentials: true, // Ensure WebSocket is attempted first
 });
 
 const CodeSender = ({isCodeSenderClick}) => {

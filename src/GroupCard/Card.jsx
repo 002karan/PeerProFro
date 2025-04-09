@@ -10,7 +10,8 @@ import { setFalse, setTrue } from "../Features/counter/toggleConnectUsers";
 
 // Initialize Socket.IO connection
 const socket = io(import.meta.env.VITE_SERVER_BASE_URL, {
-  transports: ['websocket', 'polling'], // Ensure WebSocket is attempted first
+  transports: ['websocket', 'polling'],
+  withCredentials: true,// Ensure WebSocket is attempted first
 });
 
 // Function to assign different colors to users
