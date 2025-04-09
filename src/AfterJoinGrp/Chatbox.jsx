@@ -5,22 +5,22 @@ import styled from "styled-components";
 import ScrollToBottom, { useScrollToBottom } from "react-scroll-to-bottom";
 import { io } from "socket.io-client";
 import sendIcon from "../assets/sendicon.png";
+import { initSocket, getSocket } from "../socketHandler/socketHandler";
 import { toggleState, setTrue, setFalse } from "../Features/counter/toggleConnectUsers";
 const socket = io(import.meta.env.VITE_SERVER_BASE_URL,{
-  transports: ['websocket', 'polling'], 
+  transports: ['websocket', 'polling'],
 });
 
 const ChatBox = ({ isVisible, toggleChatBox }) => {
+  const dispatch = useDispatch();
+  const { profile } = useSelector((state) => state.user);
+  const groupId = useSelector((state) => state.passingGroupId.groupId);
+  const unreadMessage = useSelector((state) => state.connectedUsers.unreadMessage);
   const scrollToBottom = useScrollToBottom();
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
-
-  const dispatch = useDispatch();
-  const { profile } = useSelector((state) => state.user);
-  const groupId = useSelector((state) => state.passingGroupId.groupId);
-  const unreadMessage = useSelector((state) => state.connectedUsers.unreadMessage);
 
   console.log("unreadMessage", unreadMessage)
   const senderName = profile?.user?.name;
@@ -36,7 +36,7 @@ const ChatBox = ({ isVisible, toggleChatBox }) => {
 
   useEffect(() => {
 
-
+    
     if (!socket.connected) {
       socket.connect();
     }
