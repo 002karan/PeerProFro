@@ -64,7 +64,9 @@ class CustomAwareness {
 }
 
 const CodeEditor = ({isEditorVisible}) => {
-  const socket = io(import.meta.env.VITE_SERVER_BASE_URL);
+  const socket = io(import.meta.env.VITE_SERVER_BASE_URL,{
+    transports: ['websocket', 'polling'], // Ensure WebSocket is attempted first
+  });
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
   const dispatch = useDispatch();

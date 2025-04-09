@@ -53,7 +53,7 @@ export const loginUser = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       // const apiBaseURL = import.meta.env.VITE_SERVER_BASE_URL;
-      const response = await fetch(`https://peerproback.onrender.com/user/v1/login`, {
+      const response = await fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/user/v1/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),

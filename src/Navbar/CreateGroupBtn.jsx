@@ -12,7 +12,9 @@ import { createGroup, joinPrivateGroup } from "../Features/counter/createGroup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const socket = io(import.meta.env.VITE_SERVER_BASE_URL, { transports: ["websocket"] });
+const socket = io(import.meta.env.VITE_SERVER_BASE_URL, {
+  transports: ['websocket', 'polling'], // Ensure WebSocket is attempted first
+});
 
 const CreateGroup = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);

@@ -8,15 +8,16 @@ import CreateGroup from '../Navbar/CreateGroupBtn';
 import SearchBar from '../Navbar/Search';
 
 
-const socket = io(import.meta.env.VITE_SERVER_BASE_URL);
+const socket = io(import.meta.env.VITE_SERVER_BASE_URL,{
+    transports: ['websocket', 'polling'], // Ensure WebSocket is attempted first
+  });
 
 export default function Home() {
     const dispatch = useDispatch();
     const groupsState = useSelector((state) => state.group);
     const searchTerm = useSelector((state) => state.searchbar.searchTerm)
     const [filteredGroups, setFilteredGroups] = useState([]);
-    console.log("searchTerm", searchTerm)
-    console.log("group", groupsState)
+ 
 
 
     // ✅ Fetch groups when component mounts

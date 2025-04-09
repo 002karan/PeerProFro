@@ -11,7 +11,7 @@ import Loader from "./notificationCircle";
 import { toggleState, setTrue, setFalse } from "../Features/counter/toggleConnectUsers";
 
 const socket = io(import.meta.env.VITE_SERVER_BASE_URL, {
-  transports: ["websocket"],
+  transports: ['websocket', 'polling'], // Ensure WebSocket is attempted first
 });
 
 const CodeSender = ({isCodeSenderClick}) => {
@@ -132,7 +132,7 @@ const CodeSender = ({isCodeSenderClick}) => {
             onClick={() => setActiveTab("receiving")}
             >
             Receiving
-      
+
           </Tab>
         </TabContainer>
 
